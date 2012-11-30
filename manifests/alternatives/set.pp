@@ -32,6 +32,6 @@
 define debian::alternatives::set($path) {
   exec { "update-alternatives --set ${name} ${path}":
     path   => '/usr/sbin',
-    unless => "/bin/sh -c '[ -L /etc/alternatives/${name} ] && [ /etc/alternatives/${name} -ef ${path} ]'"
+    unless => "/bin/sh -c '[ \"$(/bin/readlink /etc/alternatives/${name})\" = \"${path}\" ]'",
   }
 }
